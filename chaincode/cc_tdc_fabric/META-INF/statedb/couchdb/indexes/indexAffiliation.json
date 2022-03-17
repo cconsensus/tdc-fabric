@@ -1,0 +1,10 @@
+{
+    "index": {
+        "fields": [
+            "affiliation"
+        ]
+    },
+    "ddoc": "indexAffiliationDoc",
+    "name": "indexAffiliation",
+    "type": "json"
+}

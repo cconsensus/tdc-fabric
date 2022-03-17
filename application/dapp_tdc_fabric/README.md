@@ -1,17 +1,16 @@
-# CCONSENSUS TDC FABRIC
+# Repository CCONSENSUS cc_tdc_fabric
 
-Hyperledger Fabric Smart Contract for The Developers Conference presentation.
-
-**Developed by**: David Reis
-**Contact**: davidfdr@gmail.com / david@cconsensus.com.br
-**URL**: https://www.cconsensus.com.br/home/
+Dapp and simple API developed for the **The Developers Conference 2022 (TDC Connections Brasil)**.
 
 ## VERSION AND HINTS
 
-This is a Typescript NodeJS repository. Tested with Hyperledger Fabric Test Network of
+This is a Typescript NodeJS / Express developed API dApp. Tested with Hyperledger Fabric Test Network of
 [Fabric Samples](https://github.com/hyperledger/fabric-samples) running Hyperledger Fabric version 2.4.2:
 This project was deployed and tested using Oracle Cloud provisioned using Terraform.
 We used less deployment automation just to be able to understand the complete process of running hyperledger fabric.
+
+
+*Peer version:*
 
 ```shell
 cconsensus@node1:~$ peer version
@@ -26,3 +25,18 @@ peer:
 
 cconsensus@node1:~$
 ```
+
+## How to run:
+```shell
+$ npm install
+$ tsc
+$ npm run start-node
+```
+or for development:
+```shell
+$ npm install
+$ npm run dev-dapp
+```
+
+
+
