@@ -426,7 +426,7 @@ export class CcTdcFabricContract extends Contract {
      * @param login
      */
     @Transaction(true)
-    public async initinitTokenAccount(ctx: Context, onwer: string): Promise<void> {
+    public async initTokenAccount(ctx: Context, onwer: string): Promise<void> {
         const compositeKey: string = ctx.stub.createCompositeKey(CcTokenAccount.assetType, [onwer]);
         const accountExists = await this.tokenAccontExists(ctx, onwer);
         if (accountExists) {
