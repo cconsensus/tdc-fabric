@@ -6,8 +6,8 @@ Hyperledger Fabric Smart Contract for **The Developers Conference 2022 (TDC Conn
 
 This is a Typescript NodeJS developed chaincode. Tested with Hyperledger Fabric Test Network of
 [Fabric Samples](https://github.com/hyperledger/fabric-samples) running Hyperledger Fabric version 2.4.2:
-This project was deployed and tested using Oracle Cloud provisioned using Terraform.
-We used less deployment automation just to be able to understand the complete process of running hyperledger fabric.
+This project was deployed and tested using Oracle Cloud provisioned using Terraform. We used less deployment automation
+just to be able to understand the complete process of running hyperledger fabric.
 
 ```shell
 cconsensus@node1:~$ peer version
@@ -67,40 +67,46 @@ export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/org3.examp
 export CORE_PEER_ADDRESS=localhost:11051
 ```
 
+### CLONE REPOSITORY:
+
+```shell
+git clone git@github.com:davidfdr/tdc-fabric.git
+```
+
 ### BUILD NODE PACKAGE:
 
 Go to the package.json directory (assuming that you have setup nodeJS / npm )
 
 ```shell
 npm install
+tsc
 ```
 
 or
 
 ```shell
 npm install --no-bin-links (Windows host with vagrant filesystem)
+tsc
 ```
 
 ### PACKAGE:
 
 ```shell
-peer lifecycle chaincode package idauth.tar.gz --path /vagrant/go/src/github.com/hyperledger/davidfdr/cconsensus_identity/chaincode/cc_idauth --lang node --label idauth1.1.0
-
-peer lifecycle chaincode package idauth.tar.gz --path /home/cconsensus/go/src/github.com/cconsensus/cconsensus_identity/chaincode/cc_idauth --lang node --label idauth1.0.0
+peer lifecycle chaincode package tdcfabric.tar.gz --path /home/cconsensus/go/src/github.com/cconsensus/tdc-fabric/chaincode/cc_tdc_fabric --lang node --label tdcfabric1.0.0
 ```
 
 ### INSTALL:
 
 ```shell
-peer lifecycle chaincode install idauth.tar.gz
+peer lifecycle chaincode install tdcfabric.tar.gz
 ```
 
 ### APROVE FOR ORG
 
 ```shell
 peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com \
---channelID mychannel --name idauth --sequence 1 --version 1.0.0 \
---package-id  idauth1.0.0:f0f0a7e8fd78a54881488e9d8ebbcdce534191e8dcc4e166fcc4f20c3284a891 \
+--channelID mychannel --name tdcfabric --sequence 1 --version 1.0.0 \
+--package-id   tdcfabric1.0.0:018fae3001a7b1fed651cc9b2e2d865b788a36575b2dcf2360af4108306ccc4b \
 --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 ```
 
@@ -108,7 +114,7 @@ peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameO
 
 ```shell
 peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --channelID mychannel \
---name idauth --version 1.0.0 --sequence 1 --tls \
+--name tdcfabric --version 1.0.0 --sequence 1 --tls \
 --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
 --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt \
 --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt \
