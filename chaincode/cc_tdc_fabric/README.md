@@ -92,7 +92,7 @@ tsc
 ### PACKAGE:
 
 ```shell
-peer lifecycle chaincode package tdcfabric.tar.gz --path /home/cconsensus/go/src/github.com/cconsensus/tdc-fabric/chaincode/cc_tdc_fabric --lang node --label tdcfabric1.0.0
+peer lifecycle chaincode package tdcfabric.tar.gz --path /home/cconsensus/go/src/github.com/cconsensus/tdc-fabric/chaincode/cc_tdc_fabric --lang node --label tdcfabric1.0.3
 ```
 
 ### INSTALL:
@@ -105,8 +105,8 @@ peer lifecycle chaincode install tdcfabric.tar.gz
 
 ```shell
 peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com \
---channelID mychannel --name tdcfabric --sequence 1 --version 1.0.0 \
---package-id   tdcfabric1.0.0:018fae3001a7b1fed651cc9b2e2d865b788a36575b2dcf2360af4108306ccc4b \
+--channelID mychannel --name tdcfabric --sequence 3 --version 1.0.3 \
+--package-id tdcfabric1.0.3:cebf264320d3c0178d4acd9216b82936ac29d55baffc5d7954c2b5a94117b706 \
 --tls --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 ```
 
@@ -114,7 +114,7 @@ peer lifecycle chaincode approveformyorg -o localhost:7050 --ordererTLSHostnameO
 
 ```shell
 peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --channelID mychannel \
---name tdcfabric --version 1.0.0 --sequence 1 --tls \
+--name tdcfabric --version 1.0.3 --sequence 3 --tls \
 --cafile ${PWD}/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
 --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt \
 --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt \

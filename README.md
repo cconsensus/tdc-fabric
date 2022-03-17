@@ -3,7 +3,9 @@
 Hyperledger Fabric Smart Contract for The Developers Conference presentation.
 
 **Developed by**: David Reis
+
 **Contact**: davidfdr@gmail.com / david@cconsensus.com.br
+
 **URL**: https://www.cconsensus.com.br/home/
 
 ## VERSION AND HINTS

@@ -60,7 +60,7 @@ tokenRouter.patch(
       value: Joi.number().positive().required(),
     },
   }),
-  tokenController.addTokens,
+  tokenController.subtractTokens,
 );
 
 export default tokenRouter;
