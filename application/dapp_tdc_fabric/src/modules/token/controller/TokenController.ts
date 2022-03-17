@@ -6,8 +6,9 @@ import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 import EvaluateTransactionService from '../../../shared/services/EvaluateTransactionService';
 import SubmitTransactionService from '../../../shared/services/SubmitTransactionService';
 import { transformTokenAccountToArrayStringValues } from '../../../shared/utils/AppUtil';
+import { Queue } from 'bullmq';
 
-const { OK } = StatusCodes;
+const { ACCEPTED, OK } = StatusCodes;
 
 export default class TokenController {
   public async show(request: Request, response: Response): Promise<Response> {
@@ -61,6 +62,43 @@ export default class TokenController {
     const data = await submitTransactionService.execute(contract);
     return response.status(OK).json({
       status: getReasonPhrase(OK),
+      job: data,
+    });
+  }
+
+  public async initAsync(request: Request, response: Response): Promise<Response> {
+    const loggedUser = request.user.id;
+    const queue = request.app.locals.jobq as Queue;
+    const tokenAccount: TokenAccount = request.body as TokenAccount;
+    const transactionArgs = transformTokenAccountToArrayStringValues(tokenAccount);
+    const submitTransactionService = new SubmitTransactionService('initTokenAccount', transactionArgs);
+    const data = await submitTransactionService.executeAsyncTransaction(queue, loggedUser);
+    return response.status(ACCEPTED).json({
+      status: getReasonPhrase(ACCEPTED),
+      data,
+    });
+  }
+
+  public async addTokensAsync(request: Request, response: Response): Promise<Response> {
+    const loggedUser = request.user.id;
+    const queue = request.app.locals.jobq as Queue;
+    const { owner, value } = request.body;
+    const submitTransactionService = new SubmitTransactionService('addTokens', [owner, value]);
+    const data = await submitTransactionService.executeAsyncTransaction(queue, loggedUser);
+    return response.status(ACCEPTED).json({
+      status: getReasonPhrase(ACCEPTED),
+      job: data,
+    });
+  }
+
+  public async subtractTokensAsync(request: Request, response: Response): Promise<Response> {
+    const loggedUser = request.user.id;
+    const queue = request.app.locals.jobq as Queue;
+    const { owner, value } = request.body;
+    const submitTransactionService = new SubmitTransactionService('subtractTokens', [owner, value]);
+    const data = await submitTransactionService.executeAsyncTransaction(queue, loggedUser);
+    return response.status(ACCEPTED).json({
+      status: getReasonPhrase(ACCEPTED),
       job: data,
     });
   }

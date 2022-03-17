@@ -63,4 +63,36 @@ tokenRouter.patch(
   tokenController.subtractTokens,
 );
 
+tokenRouter.post(
+  '/async',
+  celebrate({
+    [Segments.BODY]: {
+      owner: Joi.string().email().required(),
+    },
+  }),
+  tokenController.initAsync,
+);
+
+tokenRouter.patch(
+  '/async/addTokens',
+  celebrate({
+    [Segments.BODY]: {
+      owner: Joi.string().email().required(),
+      value: Joi.number().positive().required(),
+    },
+  }),
+  tokenController.addTokensAsync,
+);
+
+tokenRouter.patch(
+  '/async/subtractTokens',
+  celebrate({
+    [Segments.BODY]: {
+      owner: Joi.string().email().required(),
+      value: Joi.number().positive().required(),
+    },
+  }),
+  tokenController.subtractTokensAsync,
+);
+
 export default tokenRouter;
