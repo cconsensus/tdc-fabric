@@ -1,14 +1,14 @@
 import { Contract, TransientMap } from 'fabric-network';
 import { Queue } from 'bullmq';
-import { logger } from '../../../shared/utils/logger';
-import { submitTransaction } from '../../../shared/utils/fabric';
-import { handleError } from '../../../shared/errors/error';
-import { addSubmitTransactionJob } from '../../../shared/utils/jobs';
-import { ISubmitService } from '../../../shared/services/interfaces/iservice';
-import IdAuthService from '../../../shared/services/idauthservice';
-import IdentityError from '../../../shared/errors/IdentityError';
+import { logger } from '../utils/logger';
+import { submitTransaction } from '../utils/fabric';
+import { handleError } from '../errors/error';
+import { addSubmitTransactionJob } from '../utils/jobs';
+import { ISubmitService } from './interfaces/iservice';
+import TdcFabricService from './tdcfabricservice';
+import IdentityError from '../errors/IdentityError';
 
-class SubmitTransactionService extends IdAuthService implements ISubmitService {
+class SubmitTransactionService extends TdcFabricService implements ISubmitService {
   readonly transactionName: string;
 
   constructor(transactionName: string, transactionArgs: string[], transientData?: TransientMap) {

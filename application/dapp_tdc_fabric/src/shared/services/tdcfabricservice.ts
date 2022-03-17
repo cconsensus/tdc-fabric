@@ -1,7 +1,7 @@
 import IdentityError from '../errors/IdentityError';
 import { TransientMap } from 'fabric-network';
 
-export default class IdAuthService {
+export default class TdcFabricService {
   readonly transactionArgs: string[];
   readonly transientData: TransientMap;
 

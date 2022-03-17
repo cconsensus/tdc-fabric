@@ -4,9 +4,9 @@ import { IdentityAuth } from '../assets/idAuth';
 import * as config from '../../../config/config';
 import { getReasonPhrase, StatusCodes } from 'http-status-codes';
 import AuthenticateService from '../services/AuthenticateService';
-import EvaluateTransactionService from '../services/EvaluateTransactionService';
-import SubmitTransactionService from '../services/SubmitTransactionService';
-import { transFormIdentityAuthToArrayStringValues } from '../../../shared/utils/AppUtil';
+import EvaluateTransactionService from '../../../shared/services/EvaluateTransactionService';
+import SubmitTransactionService from '../../../shared/services/SubmitTransactionService';
+import { transformIdentityAuthToArrayStringValues } from '../../../shared/utils/AppUtil';
 import { hash } from 'bcryptjs';
 import { Queue } from 'bullmq';
 
@@ -85,7 +85,7 @@ export default class IdentityController {
 
   public async create(request: Request, response: Response): Promise<Response> {
     const idAuth: IdentityAuth = request.body as IdentityAuth;
-    const transactionArgs = transFormIdentityAuthToArrayStringValues(idAuth);
+    const transactionArgs = transformIdentityAuthToArrayStringValues(idAuth);
     const contract = request.app.locals[config.orgName]?.assetContract as Contract;
     const pwd = {
       enrollmentSecretHash: Buffer.from(await hash(idAuth.enrollmentSecret, 8)),
@@ -102,7 +102,7 @@ export default class IdentityController {
     const loggedUser = request.user.id;
     const identityQueue = request.app.locals.jobq as Queue;
     const idAuth: IdentityAuth = request.body as IdentityAuth;
-    const transactionArgs = transFormIdentityAuthToArrayStringValues(idAuth);
+    const transactionArgs = transformIdentityAuthToArrayStringValues(idAuth);
     const pwd = {
       enrollmentSecretHash: Buffer.from(await hash(idAuth.enrollmentSecret, 8)),
     };
@@ -116,7 +116,7 @@ export default class IdentityController {
 
   public async update(request: Request, response: Response): Promise<Response> {
     const idAuth: IdentityAuth = request.body as IdentityAuth;
-    const transactionArgs = transFormIdentityAuthToArrayStringValues(idAuth);
+    const transactionArgs = transformIdentityAuthToArrayStringValues(idAuth);
     const contract = request.app.locals[config.orgName]?.assetContract as Contract;
     const pwd = {
       enrollmentSecretHash: Buffer.from(await hash(idAuth.enrollmentSecret, 8)),
@@ -133,7 +133,7 @@ export default class IdentityController {
     const loggedUser = request.user.id;
     const identityQueue = request.app.locals.jobq as Queue;
     const idAuth: IdentityAuth = request.body as IdentityAuth;
-    const transactionArgs = transFormIdentityAuthToArrayStringValues(idAuth);
+    const transactionArgs = transformIdentityAuthToArrayStringValues(idAuth);
     const pwd = {
       enrollmentSecretHash: Buffer.from(await hash(idAuth.enrollmentSecret, 8)),
     };

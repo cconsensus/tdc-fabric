@@ -36,3 +36,15 @@ export class CcIdauth {
     @Property()
     public affiliation: string;
 }
+
+@Object()
+export class CcTokenAccount {
+    @Property()
+    public static assetType = 'CcTokenAccount';
+
+    @Property()
+    public owner: string;
+
+    @Property()
+    public balance: number;
+}

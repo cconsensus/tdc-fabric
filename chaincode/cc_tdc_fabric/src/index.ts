@@ -2,8 +2,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { CcIdauthContract } from './cc-idauth-contract';
+import { CcTdcFabricContract } from './cc-tdc-fabric-contract';
 
-export { CcIdauthContract } from './cc-idauth-contract';
+export { CcTdcFabricContract } from './cc-tdc-fabric-contract';
 
-export const contracts: any[] = [CcIdauthContract];
+export const contracts: any[] = [CcTdcFabricContract];

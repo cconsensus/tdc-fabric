@@ -6,6 +6,7 @@
 
 import { IdentityAuth } from '../../modules/idauth/assets/idAuth';
 import * as config from '../../config/config';
+import {TokenAccount} from "../../modules/token/assets/tokenAccount";
 
 const prettyJSONString = (inputString: string): string => {
   if (inputString) {
@@ -15,7 +16,7 @@ const prettyJSONString = (inputString: string): string => {
   }
 };
 
-const transFormIdentityAuthToArrayStringValues = (idAuth: IdentityAuth): string[] => {
+const transformIdentityAuthToArrayStringValues = (idAuth: IdentityAuth): string[] => {
   const values: string[] = [];
   if (idAuth.login) values.push(idAuth.login);
   if (idAuth.firstName) values.push(idAuth.firstName);
@@ -31,4 +32,11 @@ const transFormIdentityAuthToArrayStringValues = (idAuth: IdentityAuth): string[
   return values;
 };
 
-export { prettyJSONString, transFormIdentityAuthToArrayStringValues };
+const transformTokenAccountToArrayStringValues = (tokenAccount: TokenAccount): string[] => {
+  const values: string[] = [];
+  if (tokenAccount.owner) values.push(tokenAccount.owner);
+  if (tokenAccount.balance) values.push(tokenAccount.balance.toString());
+  return values;
+};
+
+export { prettyJSONString, transformIdentityAuthToArrayStringValues, transformTokenAccountToArrayStringValues };

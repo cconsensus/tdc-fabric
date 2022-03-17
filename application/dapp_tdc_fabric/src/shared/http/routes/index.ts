@@ -4,6 +4,7 @@ import sessionsRouter from '../../../modules/idauth/routes/session.routes';
 import identityCARouter from '../../../modules/idauth/routes/identityca.route';
 import healthRouter from '../../../modules/health/routes/health.routes';
 import jobRouter from '../../../modules/jobs/routes/job.routes';
+import tokenRouter from '../../../modules/token/routes/token.route';
 
 const routes = Router();
 
@@ -12,6 +13,7 @@ routes.use('/identity/ca/', identityCARouter);
 routes.use('/auth/', sessionsRouter);
 routes.use('/jobs/', jobRouter);
 routes.use('/health/', healthRouter);
+routes.use('/tokenAccount/', tokenRouter);
 
 routes.get('/', (request, response) => {
   return response.json({ message: 'MIGUEL ELIAS FAULSTICH DINIZ REIS' });

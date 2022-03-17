@@ -1,12 +1,12 @@
 import { Contract } from 'fabric-network';
-import { logger } from '../../../shared/utils/logger';
-import { evaluateTransaction } from '../../../shared/utils/fabric';
-import { handleError } from '../../../shared/errors/error';
-import { IEvaluateService } from '../../../shared/services/interfaces/iservice';
-import IdAuthService from '../../../shared/services/idauthservice';
-import IdentityError from '../../../shared/errors/IdentityError';
+import { logger } from '../utils/logger';
+import { evaluateTransaction } from '../utils/fabric';
+import { handleError } from '../errors/error';
+import { IEvaluateService } from './interfaces/iservice';
+import TdcFabricService from './tdcfabricservice';
+import IdentityError from '../errors/IdentityError';
 
-class EvaluateTransactionService extends IdAuthService implements IEvaluateService {
+class EvaluateTransactionService extends TdcFabricService implements IEvaluateService {
   readonly transactionName: string;
 
   constructor(transactionName: string, transactionArgs: string[]) {

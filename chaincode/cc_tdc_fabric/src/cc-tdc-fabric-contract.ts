@@ -1,16 +1,16 @@
 import { Context, Contract, Info, Returns, Transaction } from 'fabric-contract-api';
 import { Iterators } from 'fabric-shim-api';
-import { CcIdauth } from './cc-idauth';
+import { CcIdauth, CcTokenAccount } from './cc-tdc-fabric';
 import { compare } from 'bcryptjs';
-import { validateAcess } from './cc-idauth-util';
+import { validateAcess } from './cc-tdc-fabric-util';
 
 @Info({
-    title: 'cc-idauth',
-    description: 'Chaincode to deal with identity and authentication using hyperledger fabric',
+    title: 'cc-tdc-fabric',
+    description: 'Chaincode to deal with identity, authentication and user token account',
 })
-export class CcIdauthContract extends Contract {
+export class CcTdcFabricContract extends Contract {
     constructor() {
-        super('br.com.cconsensus.regcon');
+        super('br.com.cconsensus.tdcfabric');
     }
 
     /**
@@ -48,7 +48,7 @@ export class CcIdauthContract extends Contract {
     }
 
     /**
-     * verifica se o asset existe na ledger.
+     * Check if identity exists in the ledger.
      * @param ctx
      * @param login
      */
@@ -56,7 +56,8 @@ export class CcIdauthContract extends Contract {
     @Returns('boolean')
     public async idExists(ctx: Context, login: string): Promise<boolean> {
         console.info('===== idExists INIT =====');
-        const data: Uint8Array = await ctx.stub.getState(login);
+        const compositeKey: string = ctx.stub.createCompositeKey(CcIdauth.assetType, [login]);
+        const data: Uint8Array = await ctx.stub.getState(compositeKey);
         console.info('===== idExists END =====');
         return !!data && data.length > 0;
     }
@@ -136,7 +137,8 @@ export class CcIdauthContract extends Contract {
         ccIdauth.organization = organization;
         ccIdauth.affiliation = affiliation;
         const buffer: Buffer = Buffer.from(JSON.stringify(ccIdauth));
-        await ctx.stub.putState(ccIdauth.login, buffer);
+        const compositeKey: string = ctx.stub.createCompositeKey(CcIdauth.assetType, [ccIdauth.login]);
+        await ctx.stub.putState(compositeKey, buffer);
         console.info(`===== updateOrCreate identity: ${ccIdauth.login} =====`);
         console.info('===== INIT updateOrCreate =====');
     }
@@ -193,7 +195,8 @@ export class CcIdauthContract extends Contract {
         if (!exists) {
             throw new Error(`This ID ${login} does not exists!`);
         }
-        const data: Uint8Array = await ctx.stub.getState(login);
+        const compositeKey: string = ctx.stub.createCompositeKey(CcIdauth.assetType, [login]);
+        const data: Uint8Array = await ctx.stub.getState(compositeKey);
         const ccIdauth: CcIdauth = JSON.parse(data.toString()) as CcIdauth;
         ccIdauth.enrollmentSecret = undefined;
         console.info('===== getId END =====');
@@ -201,7 +204,7 @@ export class CcIdauthContract extends Contract {
     }
 
     /**
-     * Authenticate de user.
+     * Authenticate the user.
      * @param ctx
      * @param login
      */
@@ -217,7 +220,8 @@ export class CcIdauthContract extends Contract {
             throw new Error(`Unable to find this identity: ${login}`);
         }
         console.info('===== authenticate INIT =====');
-        const buffer: Buffer = (await ctx.stub.getState(login)) as Buffer;
+        const compositeKey: string = ctx.stub.createCompositeKey(CcIdauth.assetType, [login]);
+        const buffer: Buffer = (await ctx.stub.getState(compositeKey)) as Buffer;
         const idAuth: CcIdauth = JSON.parse(buffer.toString()) as CcIdauth;
 
         const pwdConfirmed = await compare(enrollmentSecretBytes.toString(), idAuth.enrollmentSecret);
@@ -227,7 +231,7 @@ export class CcIdauthContract extends Contract {
     }
 
     /**
-     * Get all users from a organization
+     * Get all users from organization
      * @param ctx
      * @param organization
      */
@@ -249,7 +253,7 @@ export class CcIdauthContract extends Contract {
     }
 
     /**
-     * Get all users from a organization
+     * Get all users from organization
      * @param ctx
      * @param organization
      * @param pageSize
@@ -319,7 +323,7 @@ export class CcIdauthContract extends Contract {
     }
 
     /**
-     * Consulta com query personalizada.
+     * Personalized query
      * @param ctx
      * @param queryString
      */
@@ -335,7 +339,7 @@ export class CcIdauthContract extends Contract {
     }
 
     /**
-     * Consulta com query personalizada.
+     * Query paginated.
      * @param ctx
      * @param queryString
      * @param pageSize
@@ -367,7 +371,8 @@ export class CcIdauthContract extends Contract {
     public async getHistory(ctx: Context, login: string): Promise<string> {
         console.info('===== getHistory INIT =====');
         validateAcess(ctx);
-        const results = await this.getAllHitoryResults(ctx.stub.getHistoryForKey(login));
+        const compositeKey: string = ctx.stub.createCompositeKey(CcIdauth.assetType, [login]);
+        const results = await this.getAllHitoryResults(ctx.stub.getHistoryForKey(compositeKey));
         console.info(`getHistory: \n ${JSON.stringify(results, null, 2)}`);
         const history = {
             AssetType: CcIdauth.assetType,
@@ -379,7 +384,121 @@ export class CcIdauthContract extends Contract {
     }
 
     /**
-     * Coloca todos os resultados da consulta em uma string
+     * Get Token Account History
+     * @param ctx
+     * @param login
+     */
+    @Transaction(false)
+    @Returns('string')
+    public async getTokenAccountHistory(ctx: Context, onwer: string): Promise<string> {
+        console.info('===== getTokenAccountHistory INIT =====');
+        validateAcess(ctx);
+        const compositeKey: string = ctx.stub.createCompositeKey(CcTokenAccount.assetType, [onwer]);
+        const results = await this.getAllHitoryResults(ctx.stub.getHistoryForKey(compositeKey));
+        console.info(`getHistory: \n ${JSON.stringify(results, null, 2)}`);
+        const history = {
+            AssetType: CcTokenAccount.assetType,
+            id: onwer,
+            history: results,
+        };
+        console.info('===== getTokenAccountHistory END =====');
+        return JSON.stringify(history);
+    }
+
+    /**
+     * Check if user token account exists.
+     * @param ctx
+     * @param login
+     */
+    @Transaction(false)
+    @Returns('boolean')
+    public async tokenAccontExists(ctx: Context, onwer: string): Promise<boolean> {
+        console.info('===== tokenAccontExists INIT =====');
+        const compositeKey: string = ctx.stub.createCompositeKey(CcTokenAccount.assetType, [onwer]);
+        const data: Uint8Array = await ctx.stub.getState(compositeKey);
+        console.info('===== tokenAccontExists END =====');
+        return !!data && data.length > 0;
+    }
+
+    /**
+     * Initialize the account.
+     * @param ctx
+     * @param login
+     */
+    @Transaction(true)
+    public async initinitTokenAccount(ctx: Context, onwer: string): Promise<void> {
+        const compositeKey: string = ctx.stub.createCompositeKey(CcTokenAccount.assetType, [onwer]);
+        const accountExists = await this.tokenAccontExists(ctx, onwer);
+        if (accountExists) {
+            throw new Error(`This account ${onwer} already initialized!`);
+        }
+        const ccTokenAccount: CcTokenAccount = new CcTokenAccount();
+        ccTokenAccount.owner = onwer;
+        ccTokenAccount.balance = 0;
+        const buffer: Buffer = Buffer.from(JSON.stringify(ccTokenAccount));
+        await ctx.stub.putState(compositeKey, buffer);
+    }
+
+    /**
+     * Returns the ID
+     * @param ctx
+     * @param login
+     */
+    @Transaction(false)
+    @Returns('CcTokenAccount')
+    public async getTokenAccountByOwner(ctx: Context, owner: string): Promise<CcTokenAccount> {
+        console.info(`===== getTokenAccountByLogin INIT ${owner} =====`);
+        validateAcess(ctx);
+        const accountExists = await this.tokenAccontExists(ctx, owner);
+        if (!accountExists) {
+            throw new Error(`You need initialize the account for ${owner} first!`);
+        }
+        const compositeKey: string = ctx.stub.createCompositeKey(CcTokenAccount.assetType, [owner]);
+        const data: Uint8Array = await ctx.stub.getState(compositeKey);
+        const ccTokenAccount: CcTokenAccount = JSON.parse(data.toString()) as CcTokenAccount;
+        console.info('===== getTokenAccountByLogin END =====');
+        return ccTokenAccount;
+    }
+
+    /**
+     * Add tokens to the account.
+     * @param ctx
+     * @param login
+     * @param value
+     */
+    @Transaction(true)
+    public async addTokens(ctx: Context, owner: string, value: number): Promise<void> {
+        console.info(`===== addTokens INIT ${owner} =====`);
+        const compositeKey: string = ctx.stub.createCompositeKey(CcTokenAccount.assetType, [owner]);
+        const ccTokenAccount: CcTokenAccount = (await this.getTokenAccountByOwner(ctx, owner)) as CcTokenAccount;
+        ccTokenAccount.balance += value;
+        const buffer: Buffer = Buffer.from(JSON.stringify(ccTokenAccount));
+        await ctx.stub.putState(compositeKey, buffer);
+        console.info(`===== addTokens END ${owner} =====`);
+    }
+
+    /**
+     * Subtract tokens of the account.
+     * @param ctx
+     * @param login
+     * @param value
+     */
+    @Transaction(true)
+    public async subtractTokens(ctx: Context, owner: string, value: number): Promise<void> {
+        console.info(`===== subtractTokens INIT ${owner} =====`);
+        const compositeKey: string = ctx.stub.createCompositeKey(CcTokenAccount.assetType, [owner]);
+        const ccTokenAccount: CcTokenAccount = (await this.getTokenAccountByOwner(ctx, owner)) as CcTokenAccount;
+        ccTokenAccount.balance -= value;
+        if (ccTokenAccount.balance < 0) {
+            throw new Error(`None enouth tokens to subtract for this account: ${owner}!`);
+        }
+        const buffer: Buffer = Buffer.from(JSON.stringify(ccTokenAccount));
+        await ctx.stub.putState(compositeKey, buffer);
+        console.info(`===== subtractTokens END ${owner} =====`);
+    }
+
+    /**
+     * Get paginated results.
      * @param resultsIterator
      * @private
      */
