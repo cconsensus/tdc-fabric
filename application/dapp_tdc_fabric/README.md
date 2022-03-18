@@ -32,7 +32,7 @@ cconsensus@node1:~$
 ```shell
 # look for .env user password configuration.
 # for development pourposes, will run this container on the same network of fabric samples
-docker run --network fabric_test -p 6379:6379 --hostname redis.cconsensus.com.br --name redis.cconsensus.com.br -d redis --maxmemory-policy noeviction --requirepass dckdadekkkkd39489843AdTDChjÇ
+$ docker run --network fabric_test -p 6379:6379 --hostname redis.cconsensus.com.br --name redis.cconsensus.com.br -d redis --maxmemory-policy noeviction --requirepass dckdadekkkkd39489843AdTDChjÇ
 ```
 
 ## How to run:
@@ -50,11 +50,22 @@ $ npm install
 $ npm run dev-dapp
 ```
 
-## Build docker image
+## Build docker image:
 
 ```shell
 $ docker build --tag cconsensus/dapp_tdc_fabric:1.0.0 .
+```
+
+## Run image using docker:
+
+```shell
 $ docker run -p 4444:4444 --hostname dapp.cconsensus.com.br  --name dapp.cconsensus.com.br --network fabric_test -it cconsensus/dapp_tdc_fabric:1.0.0
+```
+
+## Run image using docker compose:
+
+```shell
+$ docker-compose -f ./docker-compose.yaml up -d
 ```
 
 
