@@ -1,0 +1,49 @@
+### .env FILE contendo configurações parametrizadas do ambiente ###
+####################################################################
+# ORGANIZATION SPECIFICS
+####################################################################
+CONNECTION_PROFILE_PATH=connection/connection.json
+API_URL=http://localhost:4444
+API_WEB_URL=http://localhost:4444
+WALLETS_BASE_PATH=wallets
+ORG_NAME=Org2MSP
+ORG_CA_HOSTNAME=ca.org2.example.com
+REGISTAR_USER=admin
+REGISTAR_PASS=adminpw
+DAPP_USER=dappIdAuthUserOrg2@tdc.oracle
+DAPP_PASSWORD=dappIdAuthUserOrg
+APP_JWT_SECRET=coloque_uma_chave_decente
+APP_DEFAULT_AFFILIATION=org1.department1
+####################################################################
+# CHAINCODDE SPECIFICS
+####################################################################
+CC_NAME=tdcfabric
+CC_ID=br.com.cconsensus.tdcfabric
+CHANNEL=mychannel
+####################################################################
+# ENVIRONMENT SPECIFICS
+####################################################################
+LOG_LEVEL=debug
+TCP_PORT=5555
+####################################################################
+# HYPERLEDGER FABRIC SPECIFICS
+####################################################################
+QUERY_TIMEOUT=3000
+COMMIT_TMEOUT=3000
+ENDORSE_TIMEOUT=3000
+AS_LOCALHOST=false
+####################################################################
+# BULLMQ AND REDIS CONFIGURATION
+####################################################################
+REDIS_HOST=tdc.cconsensus.com.br
+REDIS_PORT=6379
+#REDIS_USERNAME=dapp
+REDIS_PASSWORD=dckdadekkkkd39489843AdTDChjÇ
+JOB_QUEUE_NAME=tdcorg2Fabric
+SUBMIT_JOB_BACKOFF_TYPE=fixed
+SUBMIT_JOB_BACKOFF_DELAY=3000
+SUBMIT_JOB_ATTEMPTS=5
+SUBMIT_JOB_CONCURRENCY=5
+MAX_COMPLETED_SUBMIT_JOBS=1000
+MAX_FAILED_SUBMIT_JOBS=1000
+SUBMIT_JOB_QUEUE_SCHEDULER=true

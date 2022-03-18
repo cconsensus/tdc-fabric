@@ -65,7 +65,7 @@ $ docker run -p 4444:4444 --hostname dapp.cconsensus.com.br  --name dapp.cconsen
 ## Run image using docker compose:
 
 ```shell
-$ docker-compose -f ./docker-compose.yaml up -d
+$ docker-compose -f ./docker-compose-dapps.yaml up -d
 ```
 
 

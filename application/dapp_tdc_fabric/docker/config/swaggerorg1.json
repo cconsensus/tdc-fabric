@@ -1,0 +1,1566 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Blockchain DAPP API - TDC Fabric presentation API",
+    "version": "1.0",
+    "title": "TDC Fabric API",
+    "contact": {
+      "email": "david@cconsensus.com.br"
+    },
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "host": "org1tdc.cconsensus.com.br:4444",
+  "basePath": "/",
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/identity/{login}": {
+      "get": {
+        "summary": "Returns ID by Login (Key is Login)",
+        "description": "Returns ID by Login (Key is Login)",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "login",
+            "in": "path",
+            "description": "Identity key is Login, this attribute.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/IdentityAuthObject"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/identity/validate/{login}": {
+      "get": {
+        "summary": "Check if Identity exists",
+        "description": "Check if Identity exists",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "login",
+            "in": "path",
+            "description": "Identity key is Login, this attribute.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/identity/history/{login}": {
+      "get": {
+        "summary": "Returns the update history of this identity (Login email)",
+        "description": "Returns the update history of this identity (Login email)",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "login",
+            "in": "path",
+            "description": "Identity key is Login, this attribute.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/IdentityAuthHistoyObject"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/identity/listByOrg/{organization}": {
+      "get": {
+        "summary": "Return all identities from given organization",
+        "description": "Return all identities from given organization",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "organization",
+            "in": "path",
+            "description": "The organization MSP ID Hyperledger Fabric.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/IdentityAuthQueryResponseObject"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/identity/listByAffiliation/{affiliation}": {
+      "get": {
+        "summary": "Return all identities from given affiliation",
+        "description": "Return all identities from given affiliation",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "affiliation",
+            "in": "path",
+            "description": "User affiliation department.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/IdentityAuthQueryResponseObject"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/identity/": {
+      "post": {
+        "summary": "Creates the identity",
+        "description": "Creates the identity",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "IdentityAuth Object.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/IdentityAuthObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/identity/async/": {
+      "post": {
+        "summary": "Creates the identity assinchronously",
+        "description": "Creates the identity assinchronously",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "IdentityAuth Object.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/IdentityAuthObject"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The job was successfully submitted",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/identity/ca/": {
+      "post": {
+        "summary": "Creates the identity inside CA",
+        "description": "Creates the identity inside CA",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "IdentityAuth Object.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/IdentityAuthObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/identity": {
+      "put": {
+        "summary": "Updates the identity",
+        "description": "Updates the identity",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "IdentityAuth Object.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/IdentityAuthObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/identity/async": {
+      "put": {
+        "summary": "Updates the identity assynchronously",
+        "description": "Updates the identity assynchronously",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "IdentityAuth Object.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/IdentityAuthObject"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "The job has been successfully submitted",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/identity/ca": {
+      "put": {
+        "summary": "Update the identity inside CA",
+        "description": "Update the identity inside CA",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "IdentityAuth Object.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/IdentityAuthObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/identity/ca/enroll/": {
+      "post": {
+        "summary": "Enroll the user and add his certificates inside wallet.",
+        "description": "Enroll the user and add his certificates inside wallet.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "IdentityAuth Object.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/IdentityAuthObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "$ref": "#/definitions/x509IdentityObject"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/identity/ca/getCAIdentity/{enrollmentId}": {
+      "get": {
+        "summary": "Return identity from Hyperledger Certificate Authority",
+        "description": "Return identity from Hyperledger Certificate Authority",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "enrollmentId",
+            "in": "path",
+            "description": "CA enrollmentID.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/identity/ca/listAllIds": {
+      "get": {
+        "summary": "Return all identities from Hyperledger Certificate Authority",
+        "description": "Return all identities from Hyperledger Certificate Authority",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/identity/auth/": {
+      "post": {
+        "summary": "Authenticate user by validating login and password secret.",
+        "description": "Authenticate user by validating login and password secret.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Auth Objetc.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "login": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/auth/": {
+      "post": {
+        "summary": "Authenticate and generates JWT Token.",
+        "description": "Authenticate and generates JWT Token.",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Auth Objetc.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "login": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "properties": {
+                "user": {
+                  "type": "string"
+                },
+                "token": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/jobs/{jobId}": {
+      "get": {
+        "summary": "Get job information",
+        "description": "Get job information",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "description": "The JOB ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/jobInfo"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/jobs/count/get": {
+      "get": {
+        "summary": "Get the Job count",
+        "description": "Get the Job count",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/jobInfo"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/health/ready": {
+      "get": {
+        "summary": "Checks if the service is responding.",
+        "description": "Checks if the service is responding.",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/defaultResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/health/live": {
+      "get": {
+        "summary": "Checks if service dependencies are ok - Blockchain network and Redis server for asynchronous transactions.",
+        "description": "Checks if service dependencies are ok - Blockchain network and Redis server for asynchronous transactions.",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "It is alive!!!",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "jobInfo": {
+                  "type": "object",
+                  "$ref": "#/definitions/jobInfo"
+                },
+                "blockChainInfo": {
+                  "type": "object",
+                  "$ref": "#/definitions/qsccChainInfoResponse"
+                },
+                "timestamp": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/qscc/chaininfo/get": {
+      "get": {
+        "summary": "Get Blockchain Info object from QSCC chaincode",
+        "description": "Get Blockchain Info object from QSCC chaincode",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/qsccChainInfoResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/qscc/{txId}": {
+      "get": {
+        "summary": "Get transaction by ID",
+        "description": "Get transaction by ID",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "txId",
+            "in": "path",
+            "description": "The transaction ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/qscc/block/{txId}": {
+      "get": {
+        "summary": "Get the block containing the transaction tx ID",
+        "description": "Get the block containing the transaction tx ID",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "txId",
+            "in": "path",
+            "description": "The transaction ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/qscc/block/number/{blockNumber}": {
+      "get": {
+        "summary": "Get block by number",
+        "description": "Get block by number",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "blockNumber",
+            "in": "path",
+            "description": "The Block Number",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/qscc/block/hash/{hash}": {
+      "get": {
+        "summary": "Get block by hash",
+        "description": "Get block by hash",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "hash",
+            "in": "path",
+            "description": "The Block Hash",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/qscc/validationcode/{txId}": {
+      "get": {
+        "summary": "Gets transaction validation code",
+        "description": "Gets transaction validation cod",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "txId",
+            "in": "path",
+            "description": "The transaction ID",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/qsccTxValidationCodeResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/tokenAccount/": {
+      "post": {
+        "summary": "Initialize the token account from a user (e-mail)",
+        "description": "Initialize the token account from a user (e-mail)",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Owner account",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "owner": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/defaultResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/tokenAccount/async/": {
+      "post": {
+        "summary": "Initialize the token account from a user (e-mail)",
+        "description": "Initialize the token account from a user (e-mail)",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Owner.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "owner": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/defaultAsyncResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/tokenAccount/addTokens/": {
+      "patch": {
+        "summary": "Add tokens to specified account owner",
+        "description": "Add tokens to specified account owner",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Owner account",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "owner": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/defaultResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/tokenAccount/async/addTokens/": {
+      "patch": {
+        "summary": "Add tokens to specified account owner",
+        "description": "Add tokens to specified account owner",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Owner.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "owner": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/defaultAsyncResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/tokenAccount/subtractTokens/": {
+      "patch": {
+        "summary": "Add tokens to specified account owner",
+        "description": "Add tokens to specified account owner",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Owner account",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "owner": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/defaultResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/tokenAccount/async/subtractTokens/": {
+      "patch": {
+        "summary": "Add tokens to specified account owner",
+        "description": "Add tokens to specified account owner",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Owner.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "owner": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/defaultAsyncResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/tokenAccount/{owner}": {
+      "get": {
+        "summary": "Get account by owner",
+        "description": "Get account by owner",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "owner",
+            "in": "path",
+            "description": "Owner key is Login, this attribute.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "balance": {
+                  "type": "number"
+                },
+                "owner": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    },
+    "/tokenAccount/history/{owner}": {
+      "get": {
+        "summary": "Get account by owner",
+        "description": "Get account by owner",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "owner",
+            "in": "path",
+            "description": "Owner key is Login, this attribute.",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/tokenAccountHistoyObject"
+            }
+          },
+          "400": {
+            "description": "Invalid status value",
+            "schema": {
+              "$ref": "#/definitions/InvalidResponse"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "IdentityAuthObject": {
+      "type": "object",
+      "properties": {
+        "login": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "enrollmentId": {
+          "type": "string"
+        },
+        "enrollmentSecret": {
+          "type": "string"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/rolesObject"
+              }
+            ]
+          }
+        },
+        "hlfRole": {
+          "type": "string"
+        },
+        "affiliation": {
+          "type": "string"
+        }
+      }
+    },
+    "IdentityAuthQueryResponseObject": {
+      "type": "object",
+      "properties": {
+        "record": {
+          "type": "object",
+          "properties": {
+            "login": {
+              "type": "string"
+            },
+            "firstName": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "enrollmentId": {
+              "type": "string"
+            },
+            "enrollmentSecret": {
+              "type": "string"
+            },
+            "roles": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "hlfRole": {
+              "type": "string"
+            }
+          }
+        },
+        "key": {
+          "type": "string"
+        }
+      }
+    },
+    "IdentityAuthHistoyObject": {
+      "type": "object",
+      "properties": {
+        "AssetType": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "$ref": "#/definitions/historyObject"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "rolesObject": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "ecert": {
+          "type": "boolean"
+        }
+      }
+    },
+    "x509IdentityObject": {
+      "type": "object",
+      "properties": {
+        "credentials": {
+          "type": "object",
+          "properties": {
+            "certificate": {
+              "type": "string"
+            },
+            "privateKey": {
+              "type": "string"
+            }
+          }
+        },
+        "mspId": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      }
+    },
+    "historyObject": {
+      "type": "object",
+      "properties": {
+        "isDelete": {
+          "type": "boolean"
+        },
+        "txId": {
+          "type": "string"
+        },
+        "timestamp": {
+          "type": "object",
+          "properties": {
+            "seconds": {
+              "type": "string"
+            },
+            "nanos": {
+              "type": "number"
+            }
+          }
+        },
+        "record": {
+          "type": "object",
+          "properties": {
+            "login": {
+              "type": "string"
+            },
+            "firstName": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "enrollmentId": {
+              "type": "string"
+            },
+            "enrollmentSecret": {
+              "type": "string"
+            },
+            "roles": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "hlfRole": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "qsccChainInfoResponse": {
+      "type": "object",
+      "properties": {
+        "height": {
+          "type": "integer"
+        },
+        "currentBlockHash": {
+          "type": "string"
+        },
+        "previousBlockHash": {
+          "type": "string"
+        }
+      }
+    },
+    "qsccTxValidationCodeResponse": {
+      "type": "object",
+      "properties": {
+        "txValidationCode": {
+          "type": "string"
+        }
+      }
+    },
+    "InvalidResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "statusCode": {
+          "type": "number"
+        },
+        "stack": {
+          "type": "string"
+        },
+        "txId": {
+          "type": "string"
+        }
+      }
+    },
+    "defaultPostResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "txId": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "defaultResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "txId": {
+              "type": "string"
+            }
+          }
+        },
+        "timestamp": {
+          "type": "string"
+        }
+      }
+    },
+    "defaultAsyncResponse": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "job": {
+          "type": "object",
+          "properties": {
+            "jobId": {
+              "type": "string",
+              "description": "JOB Id"
+            },
+            "timestamp": {
+              "type": "string",
+              "description": "Timestamp when job was added to the queue"
+            }
+          }
+        }
+      }
+    },
+    "jobInfo": {
+      "type": "object",
+      "properties": {
+        "active": {
+          "type": "integer"
+        },
+        "completed": {
+          "type": "integer"
+        },
+        "delayed": {
+          "type": "integer"
+        },
+        "failed": {
+          "type": "integer"
+        },
+        "waiting": {
+          "type": "integer"
+        }
+      }
+    },
+    "tokenAccountHistoyObject": {
+      "type": "object",
+      "properties": {
+        "AssetType": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "allOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "isDelete": {
+                    "type": "boolean"
+                  },
+                  "record": {
+                    "type": "object",
+                    "properties": {
+                      "balance": {
+                        "type": "number"
+                      },
+                      "owner": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "timestamp": {
+                    "type": "object",
+                    "properties": {
+                      "seconds": {
+                        "type": "string"
+                      },
+                      "nanos": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "txId": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
