@@ -29,7 +29,7 @@ services:
     volumes:
       - ./config/connection-org1_tdc_oracle.json:/app/connection/connection.json
       - ./config/.envorg1:/app/.env
-      - ./config/swaggerorg1:/app/swagger.json
+      - ./config/swaggerorg1.json:/app/swagger.json
 
   org2tdc.fabric.dapp:
     image: cconsensus/dapp_tdc_fabric:1.0.0
@@ -52,7 +52,7 @@ services:
     volumes:
       - ./config/connection-org2_tdc_oracle.json:/app/connection/connection.json
       - ./config/.envorg2:/app/.env
-      - ./config/swaggerorg2:/app/swagger.json
+      - ./config/swaggerorg2.json:/app/swagger.json
 
   org3tdc.fabric.dapp:
     image: cconsensus/dapp_tdc_fabric:1.0.0
@@ -75,4 +75,4 @@ services:
     volumes:
       - ./config/connection-org3_tdc_oracle.json:/app/connection/connection.json
       - ./config/.envorg3:/app/.env
-      - ./config/swaggerorg3:/app/swagger.json
+      - ./config/swaggerorg3.json:/app/swagger.json
