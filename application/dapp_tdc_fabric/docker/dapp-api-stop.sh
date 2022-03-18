@@ -7,4 +7,4 @@ docker-compose -f ./docker-compose-dapps.yaml down
 
 sleep 3
 
-docker ps -a --filter "name=tdc"
+docker ps -a --filter "name=tdcorg"
