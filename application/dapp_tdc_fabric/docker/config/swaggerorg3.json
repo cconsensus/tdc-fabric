@@ -15,7 +15,7 @@
     "http",
     "https"
   ],
-  "host": "org3tdc.cconsensus.com.br:4444",
+  "host": "org3tdc.cconsensus.com.br:7777",
   "basePath": "/",
   "security": [
     {

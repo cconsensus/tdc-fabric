@@ -15,7 +15,7 @@
     "http",
     "https"
   ],
-  "host": "org2tdc.cconsensus.com.br:4444",
+  "host": "org2tdc.cconsensus.com.br:5555",
   "basePath": "/",
   "security": [
     {
