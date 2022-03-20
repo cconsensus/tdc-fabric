@@ -14,6 +14,21 @@ export class CcTdcFabricContract extends Contract {
     }
 
     /**
+     * Check if identity exists in the ledger.
+     * @param ctx
+     * @param login
+     */
+    @Transaction(false)
+    @Returns('boolean')
+    public async idExists(ctx: Context, login: string): Promise<boolean> {
+        console.info('===== idExists INIT =====');
+        const compositeKey: string = ctx.stub.createCompositeKey(CcIdauth.assetType, [login]);
+        const data: Uint8Array = await ctx.stub.getState(compositeKey);
+        console.info('===== idExists END =====');
+        return !!data && data.length > 0;
+    }
+
+    /**
      *  Override unknownTransaction
      * @param ctx
      * @returns {Promise<void>}
@@ -45,21 +60,6 @@ export class CcTdcFabricContract extends Contract {
         console.info(`==> afterTransaction called by: ${ctx.clientIdentity.getMSPID()}`);
         console.info(`==> afterTransaction Transaction ID: ${ctx.stub.getTxID()}`);
         console.info(`==> afterTransaction Transaction ID: ${ctx.clientIdentity.getIDBytes().toString()}`);
-    }
-
-    /**
-     * Check if identity exists in the ledger.
-     * @param ctx
-     * @param login
-     */
-    @Transaction(false)
-    @Returns('boolean')
-    public async idExists(ctx: Context, login: string): Promise<boolean> {
-        console.info('===== idExists INIT =====');
-        const compositeKey: string = ctx.stub.createCompositeKey(CcIdauth.assetType, [login]);
-        const data: Uint8Array = await ctx.stub.getState(compositeKey);
-        console.info('===== idExists END =====');
-        return !!data && data.length > 0;
     }
 
     /**
